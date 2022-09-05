@@ -18,5 +18,6 @@ const showMovieHandler = () => {
   backdropHandler();
 };
 
+backdropElement.addEventListener('click', removeBackdropHandler);
 cancelButton.addEventListener('click', removeBackdropHandler);
 startAddMovieButton.addEventListener('click', showMovieHandler);
