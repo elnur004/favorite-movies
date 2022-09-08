@@ -28,9 +28,12 @@ const removeBackdropHandler = () => {
 // };
 
 const clearEnteredValues = () => {
-  userInputs[0].value = '';
-  userInputs[1].value = '';
-  userInputs[2].value = '';
+  for (let input of userInputs) {
+    input.value = '';
+  }
+  // userInputs[0].value = '';
+  // userInputs[1].value = '';
+  // userInputs[2].value = '';
 };
 
 const cancelMovieModalHandler = () => {
