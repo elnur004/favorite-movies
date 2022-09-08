@@ -10,6 +10,8 @@ const addButton = document.querySelector('.btn--success');
 const userInputs = popupMovieModal.querySelectorAll('input');
 const movieListEl = document.getElementById('movie-list');
 
+const movies = [];
+
 const backdropToggle = () => {
   backdropElement.classList.toggle('visible');
 };
@@ -53,6 +55,9 @@ const cancelMovieModalHandler = () => {
 const addMovieHandler = () => {
   // movieList(movieTitle.value, movieUrl.value, movieRating.value);
   const movieTitle = userInputs[0].value;
+  // .split(' ')
+  // .map((letter) => letter.charAt(0).toUpperCase() + letter.slice(1))
+  // .join(' ');
   const movieUrl = userInputs[1].value;
   const movieRating = +userInputs[2].value;
 
@@ -68,6 +73,15 @@ const addMovieHandler = () => {
     );
     removeBackdropHandler();
     clearEnteredValues(movieTitle, movieUrl, movieRating);
+
+    const newMovies = {
+      title: movieTitle,
+      url: movieUrl,
+      rating: movieRating,
+    };
+
+    movies.push(newMovies);
+    console.log(movies);
   } else if (
     !movieTitle.trim() ||
     !movieUrl.trim() ||
