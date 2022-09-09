@@ -10,6 +10,8 @@ const addButton = document.querySelector('.btn--success');
 const userInputs = popupMovieModal.querySelectorAll('input');
 const movieListEl = document.getElementById('movie-list');
 const movieDatabaseText = document.getElementById('entry-text');
+const deleteMovie = document.getElementById('delete-modal');
+const deleteYesButton = document.querySelector('.btn--danger');
 
 const movies = [];
 
@@ -30,11 +32,28 @@ const clearDBText = () => {
   }
 };
 
-const createListItem = (title, imgUrl, rating) => {
+// const deleteMovieWindowHandler = () => {
+//   deleteMovie.classList.toggle('visible');
+// };
+
+const deleteMovieHandler = (movieId) => {
+  let movieIndex = 0;
+  for (const movie of movies) {
+    if (movie.id === movieId) {
+      break;
+    }
+    movieIndex++;
+  }
+  movies.splice(movieIndex, 1);
+  movieListEl.children[movieIndex].remove();
+  // movieListEl.removeChild(movieListEl.children[movieIndex]);
+};
+
+const createListItem = (id, title, imgUrl, rating) => {
   const list = document.createElement('li');
   list.className = 'movie-element';
   list.innerHTML = `
-  <div class="movie-img">
+  <div class="movie-element__image">
     <img src=${imgUrl} alt=${title}>
   </div>
   <div class="movie-element__info">
@@ -42,6 +61,12 @@ const createListItem = (title, imgUrl, rating) => {
     <p>Rating: ${rating}/5 stars</p>
   </div>
   `;
+  list.addEventListener('click', deleteMovieHandler.bind(null, id));
+
+  // list.addEventListener('click', () => {
+  //   deleteMovieHandler(id);
+  // });
+
   movieListEl.append(list);
 };
 
@@ -82,6 +107,7 @@ const cancelMovieModalHandler = () => {
 const addMovieHandler = () => {
   // movieList(movieTitle.value, movieUrl.value, movieRating.value);
   const movieTitle = userInputs[0].value
+    // implementing first letter to uppercase
     .split(' ')
     .map((letter) => letter.charAt(0).toUpperCase() + letter.slice(1))
     .join(' ');
@@ -98,19 +124,21 @@ const addMovieHandler = () => {
     //   'beforeend',
     //   `<li>${movieTitle}</li> <li>${movieUrl}</li> <li>${+movieRating}</li>`
     // );
-    removeBackdropHandler();
-    clearDBText();
-    clearEnteredValues(movieTitle, movieUrl, movieRating);
 
-    const newMovies = {
+    const newMovie = {
+      id: Math.random().toString(),
       title: movieTitle,
       url: movieUrl,
       rating: movieRating,
     };
 
-    movies.push(newMovies);
+    movies.push(newMovie);
     console.log(movies);
-    createListItem(newMovies.title, newMovies.url, newMovies.rating);
+
+    removeBackdropHandler();
+    clearDBText();
+    clearEnteredValues(movieTitle, movieUrl, movieRating);
+    createListItem(newMovie.id, newMovie.title, newMovie.url, newMovie.rating);
   } else if (
     !movieTitle.trim() ||
     !movieUrl.trim() ||
@@ -126,3 +154,6 @@ backdropElement.addEventListener('click', removeBackdropHandler);
 cancelButton.addEventListener('click', removeBackdropHandler);
 addButton.addEventListener('click', addMovieHandler);
 startAddMovieButton.addEventListener('click', cancelMovieModalHandler);
+// movieListEl.addEventListener('click', deleteMovieWindowHandler);
+
+deleteYesButton.addEventListener('click', deleteMovieHandler);
