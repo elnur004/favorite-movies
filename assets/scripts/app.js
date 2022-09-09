@@ -9,6 +9,7 @@ const addButton = document.querySelector('.btn--success');
 // const movieRating = document.getElementById('rating');
 const userInputs = popupMovieModal.querySelectorAll('input');
 const movieListEl = document.getElementById('movie-list');
+const movieDatabaseText = document.getElementById('entry-text');
 
 const movies = [];
 
@@ -19,6 +20,29 @@ const backdropToggle = () => {
 const removeBackdropHandler = () => {
   popupMovieModal.classList.remove('visible');
   backdropElement.classList.remove('visible');
+};
+
+const clearDBText = () => {
+  if (movieDatabaseText === 0) {
+    movieDatabaseText.style.display = 'block';
+  } else {
+    movieDatabaseText.style.display = 'none';
+  }
+};
+
+const createListItem = (title, imgUrl, rating) => {
+  const list = document.createElement('li');
+  list.className = 'movie-element';
+  list.innerHTML = `
+  <div class="movie-img">
+    <img src=${imgUrl} alt=${title}>
+  </div>
+  <div class="movie-element__info">
+    <h2>${title}</h2>
+    <p>Rating: ${rating}/5 stars</p>
+  </div>
+  `;
+  movieListEl.append(list);
 };
 
 // const clearEnteredValues = () => {
@@ -57,10 +81,10 @@ const cancelMovieModalHandler = () => {
 
 const addMovieHandler = () => {
   // movieList(movieTitle.value, movieUrl.value, movieRating.value);
-  const movieTitle = userInputs[0].value;
-  // .split(' ')
-  // .map((letter) => letter.charAt(0).toUpperCase() + letter.slice(1))
-  // .join(' ');
+  const movieTitle = userInputs[0].value
+    .split(' ')
+    .map((letter) => letter.charAt(0).toUpperCase() + letter.slice(1))
+    .join(' ');
   const movieUrl = userInputs[1].value;
   const movieRating = +userInputs[2].value;
 
@@ -70,11 +94,12 @@ const addMovieHandler = () => {
     +movieRating >= 1 &&
     +movieRating <= 5
   ) {
-    movieListEl.insertAdjacentHTML(
-      'beforeend',
-      `<li>${movieTitle}</li> <li>${movieUrl}</li> <li>${+movieRating}</li>`
-    );
+    // movieListEl.insertAdjacentHTML(
+    //   'beforeend',
+    //   `<li>${movieTitle}</li> <li>${movieUrl}</li> <li>${+movieRating}</li>`
+    // );
     removeBackdropHandler();
+    clearDBText();
     clearEnteredValues(movieTitle, movieUrl, movieRating);
 
     const newMovies = {
@@ -85,6 +110,7 @@ const addMovieHandler = () => {
 
     movies.push(newMovies);
     console.log(movies);
+    createListItem(newMovies.title, newMovies.url, newMovies.rating);
   } else if (
     !movieTitle.trim() ||
     !movieUrl.trim() ||
