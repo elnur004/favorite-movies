@@ -15,13 +15,14 @@ const deleteYesButton = document.querySelector('.btn--danger');
 
 const movies = [];
 
-const backdropToggle = () => {
-  backdropElement.classList.toggle('visible');
+const backdropAdd = () => {
+  backdropElement.classList.add('visible');
 };
 
 const removeBackdropHandler = () => {
   popupMovieModal.classList.remove('visible');
   backdropElement.classList.remove('visible');
+  deleteMovie.classList.remove('visible');
 };
 
 const clearDBText = () => {
@@ -32,9 +33,10 @@ const clearDBText = () => {
   }
 };
 
-// const deleteMovieWindowHandler = () => {
-//   deleteMovie.classList.toggle('visible');
-// };
+const deleteMovieWindowHandler = () => {
+  deleteMovie.classList.add('visible');
+  backdropAdd();
+};
 
 const deleteMovieHandler = (movieId) => {
   let movieIndex = 0;
@@ -61,7 +63,7 @@ const createListItem = (id, title, imgUrl, rating) => {
     <p>Rating: ${rating}/5 stars</p>
   </div>
   `;
-  list.addEventListener('click', deleteMovieHandler.bind(null, id));
+  // list.addEventListener('click', deleteMovieHandler.bind(null, id));
 
   // list.addEventListener('click', () => {
   //   deleteMovieHandler(id);
@@ -87,7 +89,7 @@ const clearEnteredValues = () => {
 
 const cancelMovieModalHandler = () => {
   popupMovieModal.classList.toggle('visible');
-  backdropToggle();
+  backdropAdd();
   clearEnteredValues();
 };
 
@@ -154,6 +156,6 @@ backdropElement.addEventListener('click', removeBackdropHandler);
 cancelButton.addEventListener('click', removeBackdropHandler);
 addButton.addEventListener('click', addMovieHandler);
 startAddMovieButton.addEventListener('click', cancelMovieModalHandler);
-// movieListEl.addEventListener('click', deleteMovieWindowHandler);
+movieListEl.addEventListener('click', deleteMovieWindowHandler);
 
-deleteYesButton.addEventListener('click', deleteMovieHandler);
+// deleteYesButton.addEventListener('click', deleteMovieHandler);
