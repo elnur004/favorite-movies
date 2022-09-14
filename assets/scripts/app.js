@@ -11,7 +11,8 @@ const userInputs = popupMovieModal.querySelectorAll('input');
 const movieListEl = document.getElementById('movie-list');
 const movieDatabaseText = document.getElementById('entry-text');
 const deleteMovie = document.getElementById('delete-modal');
-const deleteYesButton = document.querySelector('.btn--danger');
+const confirmCancelButton = deleteMovie.querySelector('.btn--passive');
+const deleteYesButton = deleteMovie.querySelector('.btn--danger');
 
 const movies = [];
 
@@ -33,7 +34,7 @@ const clearDBText = () => {
   }
 };
 
-const deleteMovieWindowHandler = () => {
+const popupMovieWindowHandler = () => {
   deleteMovie.classList.add('visible');
   backdropAdd();
 };
@@ -49,6 +50,16 @@ const deleteMovieHandler = (movieId) => {
   movies.splice(movieIndex, 1);
   movieListEl.children[movieIndex].remove();
   // movieListEl.removeChild(movieListEl.children[movieIndex]);
+  removeBackdropHandler();
+};
+
+const deleteViaYesButton = (movieId) => {
+  movieListEl.classList.remove('visible');
+
+  deleteYesButton.addEventListener(
+    'click',
+    deleteMovieHandler.bind(null, movieId)
+  );
 };
 
 const createListItem = (id, title, imgUrl, rating) => {
@@ -56,14 +67,14 @@ const createListItem = (id, title, imgUrl, rating) => {
   list.className = 'movie-element';
   list.innerHTML = `
   <div class="movie-element__image">
-    <img src=${imgUrl} alt=${title}>
+  <img src=${imgUrl} alt=${title}>
   </div>
   <div class="movie-element__info">
-    <h2>${title}</h2>
-    <p>Rating: ${rating}/5 stars</p>
+  <h2>${title}</h2>
+  <p>Rating: ${rating}/5 stars</p>
   </div>
   `;
-  // list.addEventListener('click', deleteMovieHandler.bind(null, id));
+  list.addEventListener('click', deleteViaYesButton.bind(null, id));
 
   // list.addEventListener('click', () => {
   //   deleteMovieHandler(id);
@@ -88,7 +99,7 @@ const clearEnteredValues = () => {
 };
 
 const cancelMovieModalHandler = () => {
-  popupMovieModal.classList.toggle('visible');
+  popupMovieModal.classList.add('visible');
   backdropAdd();
   clearEnteredValues();
 };
@@ -156,6 +167,5 @@ backdropElement.addEventListener('click', removeBackdropHandler);
 cancelButton.addEventListener('click', removeBackdropHandler);
 addButton.addEventListener('click', addMovieHandler);
 startAddMovieButton.addEventListener('click', cancelMovieModalHandler);
-movieListEl.addEventListener('click', deleteMovieWindowHandler);
-
-// deleteYesButton.addEventListener('click', deleteMovieHandler);
+movieListEl.addEventListener('click', popupMovieWindowHandler);
+confirmCancelButton.addEventListener('click', removeBackdropHandler);
