@@ -27,7 +27,7 @@ const removeBackdropHandler = () => {
 };
 
 const clearDBText = () => {
-  if (movieDatabaseText === 0) {
+  if (movies.length === 0) {
     movieDatabaseText.style.display = 'block';
   } else {
     movieDatabaseText.style.display = 'none';
@@ -51,6 +51,7 @@ const deleteMovieHandler = (movieId) => {
   movieListEl.children[movieIndex].remove();
   // movieListEl.removeChild(movieListEl.children[movieIndex]);
   removeBackdropHandler();
+  clearDBText();
 };
 
 const deleteViaYesButton = (movieId) => {
