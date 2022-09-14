@@ -11,8 +11,8 @@ const userInputs = popupMovieModal.querySelectorAll('input');
 const movieListEl = document.getElementById('movie-list');
 const movieDatabaseText = document.getElementById('entry-text');
 const deleteMovie = document.getElementById('delete-modal');
+let deleteYesButton = deleteMovie.querySelector('.btn--danger');
 const confirmCancelButton = deleteMovie.querySelector('.btn--passive');
-const deleteYesButton = deleteMovie.querySelector('.btn--danger');
 
 const movies = [];
 
@@ -56,6 +56,9 @@ const deleteMovieHandler = (movieId) => {
 const deleteViaYesButton = (movieId) => {
   movieListEl.classList.remove('visible');
 
+  deleteYesButton.replaceWith(deleteYesButton.cloneNode(true));
+  deleteYesButton = deleteMovie.querySelector('.btn--danger');
+
   deleteYesButton.addEventListener(
     'click',
     deleteMovieHandler.bind(null, movieId)
@@ -77,7 +80,7 @@ const createListItem = (id, title, imgUrl, rating) => {
   list.addEventListener('click', deleteViaYesButton.bind(null, id));
 
   // list.addEventListener('click', () => {
-  //   deleteMovieHandler(id);
+  //   deleteViaYesButton(id);
   // });
 
   movieListEl.append(list);
